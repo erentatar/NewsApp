@@ -1,4 +1,4 @@
-package com.example.android.newsappstage1;
+package com.example.android.newsapp;
 
 import android.text.TextUtils;
 import android.util.Log;
