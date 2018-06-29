@@ -21,6 +21,15 @@ import java.util.List;
 public class NewsUtils {
 
     private static final String LOG_TAG = NewsActivity.class.getName();
+    private static final String RESPONSE = "response";
+    private static final String RESULTS = "results";
+    private static final String WEB_TITLE = "webTitle";
+    private static final String SECTION_NAME = "sectionName";
+    private static final String WEB_PUBLICATION_DATE = "webPublicationDate";
+    private static final String WEB_URL = "webUrl";
+    private static final String TAGS = "tags";
+    private static final String TYPE = "type";
+    private static final String CONTRIBUTOR = "contributor";
 
     private NewsUtils() {
     }
@@ -53,7 +62,7 @@ public class NewsUtils {
             urlConnection.setReadTimeout(10000);
             urlConnection.connect();
 
-            if (urlConnection.getResponseCode() == 200) {
+            if (urlConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
             } else {
@@ -109,25 +118,25 @@ public class NewsUtils {
 
         try {
             JSONObject root = new JSONObject(jsonResponse);
-            JSONObject response = root.getJSONObject("response");
-            JSONArray results = response.getJSONArray("results");
+            JSONObject response = root.getJSONObject(RESPONSE);
+            JSONArray results = response.getJSONArray(RESULTS);
 
             for (int i = 0; i < results.length(); i++) {
                 JSONObject currentNews = results.getJSONObject(i);
 
-                String newsTitle = currentNews.getString("webTitle");
-                String newsSection = currentNews.getString("sectionName");
-                String newsDate = currentNews.getString("webPublicationDate");
-                String newsUrl = currentNews.getString("webUrl");
+                String newsTitle = currentNews.getString(WEB_TITLE);
+                String newsSection = currentNews.getString(SECTION_NAME);
+                String newsDate = currentNews.getString(WEB_PUBLICATION_DATE);
+                String newsUrl = currentNews.getString(WEB_URL);
                 String newsAuthor = "N/A";
 
-                JSONArray tags = currentNews.getJSONArray("tags");
+                JSONArray tags = currentNews.getJSONArray(TAGS);
                 if (tags.length() > 0) {
                     for (int j = 0; j < tags.length(); j++) {
                         JSONObject tag = tags.getJSONObject(j);
-                        String type = tag.getString("type");
-                        if (type.equals("contributor")) {
-                            newsAuthor = "by " + tag.getString("webTitle");
+                        String type = tag.getString(TYPE);
+                        if (type.equals(CONTRIBUTOR)) {
+                            newsAuthor = "by " + tag.getString(WEB_TITLE);
                         }
                     }
                 }

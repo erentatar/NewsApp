@@ -22,6 +22,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final int NEWS_LOADER_ID = 1;
     private static final String GUARDIAN_REQUEST_URL =
             "https://content.guardianapis.com/search?section=technology&from-date=2018-06-01&order-by=newest&show-tags=contributor&api-key=9b250086-1007-468b-ac99-d202be5df74a";
+
     private NewsAdapter mAdapter;
     private TextView mEmptyStateTextView;
 
@@ -43,7 +44,10 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
                 News currentNews = mAdapter.getItem(position);
                 Uri newsUri = Uri.parse(currentNews.getUrl());
                 Intent websiteIntent = new Intent(Intent.ACTION_VIEW, newsUri);
-                startActivity(websiteIntent);
+
+                if (websiteIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(websiteIntent);
+                }
             }
         });
 

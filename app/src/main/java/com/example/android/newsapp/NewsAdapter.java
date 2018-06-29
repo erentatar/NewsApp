@@ -25,28 +25,27 @@ class NewsAdapter extends ArrayAdapter<News> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         View listItemView = convertView;
+        ViewHolder holder;
+
         if (listItemView == null) {
             listItemView = LayoutInflater.from(getContext()).inflate(R.layout.news_list_item, parent, false);
+
+            holder = new ViewHolder();
+            holder.titleView = listItemView.findViewById(R.id.title);
+            holder.sectionView = listItemView.findViewById(R.id.section);
+            holder.authorView = listItemView.findViewById(R.id.author);
+            holder.dateView = listItemView.findViewById(R.id.date);
+            listItemView.setTag(holder);
+        } else {
+            holder = (ViewHolder) listItemView.getTag();
         }
 
         News currentNews = getItem(position);
 
-        TextView titleView = listItemView.findViewById(R.id.title);
-        titleView.setText(currentNews.getTitle());
-
-        TextView categoryView = listItemView.findViewById(R.id.section);
-        categoryView.setText(currentNews.getSection());
-
-        TextView authorView = listItemView.findViewById(R.id.author);
-        authorView.setText(currentNews.getAuthor());
-
-        TextView dateView = listItemView.findViewById(R.id.date);
-        String formattedDate = formatDate(currentNews.getDate());
-        dateView.setText(formattedDate);
-
-//        TextView timeView = listItemView.findViewById(R.id.time);
-//        String formattedTime = formatTime(currentNews.getDate());
-//        timeView.setText(formattedTime);
+        holder.titleView.setText(currentNews.getTitle());
+        holder.sectionView.setText(currentNews.getSection());
+        holder.authorView.setText(currentNews.getAuthor());
+        holder.dateView.setText(formatDate(currentNews.getDate()));
 
         return listItemView;
     }
@@ -73,5 +72,12 @@ class NewsAdapter extends ArrayAdapter<News> {
             e.printStackTrace();
         }
         return time;
+    }
+
+    static class ViewHolder {
+        TextView titleView;
+        TextView sectionView;
+        TextView authorView;
+        TextView dateView;
     }
 }
