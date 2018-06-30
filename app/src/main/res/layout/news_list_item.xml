@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="6dp"
         android:textColor="@color/textColorNewsTitle"
-        android:textSize="16dp"
+        android:textSize="16sp"
         tools:text="title" />
 
     <LinearLayout
